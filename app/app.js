@@ -65,7 +65,7 @@ function googleCalendarUrl(todo) {
     action: "TEMPLATE",
     text: todo.text,
     dates: `${start.replace(/-/g, "")}/${end.replace(/-/g, "")}`,
-    details: "Todoアプリから追加",
+    details: "To-Doooon!から追加",
   });
   return `https://calendar.google.com/calendar/render?${params.toString()}`;
 }
