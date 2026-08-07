@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Todoアプリ</title>
+<link rel="stylesheet" href="style.css">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4f46e5">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Todo">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+  <div class="app">
+    <h1>Todoアプリ</h1>
+
+    <form id="todo-form" class="todo-form">
+      <input type="text" id="todo-input" placeholder="やることを入力..." autocomplete="off" required>
+      <input type="date" id="todo-date">
+      <button type="submit">追加</button>
+    </form>
+
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">すべて</button>
+      <button class="filter-btn" data-filter="active">未完了</button>
+      <button class="filter-btn" data-filter="completed">完了済み</button>
+      <button id="clear-completed" class="clear-btn">完了済みを削除</button>
+    </div>
+
+    <ul id="todo-list" class="todo-list"></ul>
+
+    <p id="todo-count" class="todo-count"></p>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch((err) => {
+          console.warn("Service worker registration failed:", err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

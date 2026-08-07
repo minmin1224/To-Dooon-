@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Todoアプリ | シンプルなタスク管理ツール</title>
+<link rel="icon" href="./app/icons/icon-192.png">
+<style>
+  :root {
+    --primary: #4f46e5;
+    --primary-dark: #4338ca;
+    --primary-light: #eef2ff;
+    --text: #1f2937;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+    --danger: #ef4444;
+    --bg: #f8fafc;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+  }
+  a { color: inherit; }
+  .container {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* Header */
+  header {
+    padding: 20px 0;
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav img { width: 32px; height: 32px; border-radius: 8px; }
+  .nav span { font-weight: 700; font-size: 1.1rem; }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, var(--primary-light), #ffffff);
+    padding: 64px 0 80px;
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0 0 16px;
+    color: var(--primary-dark);
+  }
+  .hero p.lead {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 560px;
+    margin: 0 auto 32px;
+  }
+  .cta-group {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-block;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+  }
+  .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+  .btn-secondary {
+    background: #fff;
+    color: var(--primary);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--primary); }
+
+  /* Sections */
+  section { padding: 64px 0; }
+  h2.section-title {
+    text-align: center;
+    font-size: 1.7rem;
+    margin: 0 0 40px;
+    color: var(--text);
+  }
+
+  /* Features */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+  .feature-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+  }
+  .feature-card .icon {
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+  }
+  .feature-card h3 {
+    margin: 0 0 8px;
+    font-size: 1.05rem;
+  }
+  .feature-card p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+  }
+
+  /* Screenshot / preview */
+  .preview-wrap {
+    display: flex;
+    justify-content: center;
+  }
+  .app-mock {
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+    border: 1px solid var(--border);
+  }
+  .app-mock h4 {
+    margin: 0 0 16px;
+    font-size: 1.3rem;
+    text-align: center;
+    color: var(--primary-dark);
+  }
+  .mock-form {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .mock-form .fake-input {
+    flex: 1 1 120px;
+    padding: 9px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    background: #fff;
+  }
+  .mock-form .fake-btn {
+    padding: 9px 14px;
+    border-radius: 8px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .mock-filters {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .mock-filters span {
+    padding: 5px 11px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+  .mock-filters span.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+  .mock-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #f9fafb;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+  .mock-item .dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid #cbd5e1;
+    flex-shrink: 0;
+  }
+  .mock-item .dot.checked {
+    background: var(--primary);
+    border-color: var(--primary);
+  }
+  .mock-item .txt { flex: 1; }
+  .mock-item.done .txt { text-decoration: line-through; color: #9ca3af; }
+  .mock-item .due { font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; }
+  .mock-item.overdue .due { color: var(--danger); font-weight: 700; }
+  .mock-count {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 14px;
+  }
+
+  /* Steps */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+  }
+  .step {
+    text-align: center;
+  }
+  .step .num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    margin: 0 auto 12px;
+  }
+  .step h3 { margin: 0 0 6px; font-size: 1rem; }
+  .step p { margin: 0; color: var(--text-muted); font-size: 0.9rem; }
+
+  /* Final CTA */
+  .final-cta {
+    background: var(--primary);
+    color: #fff;
+    text-align: center;
+    border-radius: 20px;
+    padding: 56px 24px;
+  }
+  .final-cta h2 { margin: 0 0 12px; font-size: 1.6rem; }
+  .final-cta p { margin: 0 0 28px; opacity: 0.9; }
+  .final-cta .btn-primary {
+    background: #fff;
+    color: var(--primary-dark);
+    box-shadow: none;
+  }
+  .final-cta .btn-primary:hover { background: #f1f1f1; }
+
+  footer {
+    text-align: center;
+    padding: 32px 0;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  .note {
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav">
+      <img src="./app/icons/icon-192.png" alt="Todoアプリ アイコン">
+      <span>Todoアプリ</span>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>やることを、見逃さない。</h1>
+      <p class="lead">
+        期限管理とGoogleカレンダー連携を備えた、シンプルなタスク管理ツール。
+        スマホのホーム画面に追加すれば、アプリのように使えます。
+      </p>
+      <div class="cta-group">
+        <a class="btn btn-primary" href="./app/index.html">今すぐアプリを起動する</a>
+        <a class="btn btn-secondary" href="#features">できることを見る</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="container">
+      <h2 class="section-title">できること</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="icon">✅</div>
+          <h3>シンプルなタスク管理</h3>
+          <p>やることを入力するだけ。完了チェックや削除もワンクリックで、迷わず使えます。</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">📅</div>
+          <h3>期限日の設定</h3>
+          <p>タスクごとに期限日を設定可能。期限切れのタスクは赤色で自動的にハイライトされます。</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🔍</div>
+          <h3>絞り込みフィルター</h3>
+          <p>「すべて」「未完了」「完了済み」でタスクを切り替えて表示できます。</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🗓️</div>
+          <h3>Googleカレンダー連携</h3>
+          <p>ボタン一つでタスクをGoogleカレンダーの予定として追加できます。</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">📱</div>
+          <h3>ホーム画面に追加(PWA)</h3>
+          <p>スマホのホーム画面に追加すれば、アプリのように起動できます。オフラインでも動作します。</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">💾</div>
+          <h3>ブラウザに自動保存</h3>
+          <p>入力したタスクはお使いの端末のブラウザ内に保存されます。次回アクセス時も続きから使えます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2 class="section-title">こんな画面で使えます</h2>
+      <div class="preview-wrap">
+        <div class="app-mock">
+          <h4>Todoアプリ</h4>
+          <div class="mock-form">
+            <div class="fake-input">やることを入力...</div>
+            <div class="fake-btn">追加</div>
+          </div>
+          <div class="mock-filters">
+            <span class="active">すべて</span>
+            <span>未完了</span>
+            <span>完了済み</span>
+          </div>
+          <div class="mock-item overdue">
+            <div class="dot"></div>
+            <div class="txt">資料をまとめる</div>
+            <div class="due">2026-08-03</div>
+          </div>
+          <div class="mock-item">
+            <div class="dot"></div>
+            <div class="txt">買い物に行く</div>
+            <div class="due">2026-08-10</div>
+          </div>
+          <div class="mock-item done">
+            <div class="dot checked"></div>
+            <div class="txt">メールを返信する</div>
+          </div>
+          <div class="mock-count">残り 2 件 / 合計 3 件</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2 class="section-title">使い方</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <h3>タスクを入力</h3>
+          <p>やることを入力欄に書いて、必要なら期限日も選びます。</p>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <h3>追加ボタンを押す</h3>
+          <p>リストにタスクが追加されます。</p>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <h3>完了したらチェック</h3>
+          <p>終わったタスクはチェックを入れるだけで完了扱いになります。</p>
+        </div>
+        <div class="step">
+          <div class="num">4</div>
+          <h3>必要ならカレンダーへ</h3>
+          <p>📅ボタンでGoogleカレンダーに予定として追加できます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="final-cta">
+        <h2>さっそく使ってみる</h2>
+        <p>インストール不要。ブラウザで開くだけですぐに使えます。</p>
+        <a class="btn btn-primary" href="./app/index.html">アプリを起動する</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <p class="note">
+        ※ このアプリはブラウザ内(localStorage)にデータを保存する個人向けTodoアプリです。端末やブラウザを変えるとデータは引き継がれません。
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>Todoアプリ &mdash; 個人開発</p>
+    </div>
+  </footer>
+
+</body>
+</html>
