@@ -122,6 +122,41 @@
     color: var(--text-muted);
     font-size: 0.92rem;
   }
+  .feature-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: var(--primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .feature-link:hover { text-decoration: underline; }
+
+  /* Install steps */
+  .install-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .install-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 28px;
+  }
+  .install-card h3 {
+    margin: 0 0 14px;
+    font-size: 1.05rem;
+    color: var(--primary-dark);
+  }
+  .install-card ol {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+  }
+  .install-card li { margin-bottom: 8px; }
+  .install-card li:last-child { margin-bottom: 0; }
 
   /* Screenshot / preview */
   .preview-wrap {
@@ -329,6 +364,7 @@
           <div class="icon">📱</div>
           <h3>ホーム画面に追加(PWA)</h3>
           <p>スマホのホーム画面に追加すれば、アプリのように起動できます。オフラインでも動作します。</p>
+          <a class="feature-link" href="#install">追加のやり方を見る →</a>
         </div>
         <div class="feature-card">
           <div class="icon">💾</div>
@@ -399,6 +435,35 @@
           <p>📅ボタンでGoogleカレンダーに予定として追加できます。</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section id="install">
+    <div class="container">
+      <h2 class="section-title">ホーム画面への追加方法</h2>
+      <div class="install-grid">
+        <div class="install-card">
+          <h3>Androidの場合(Chrome)</h3>
+          <ol>
+            <li>Chromeでアプリを開く</li>
+            <li>右上の「⋮」メニューをタップ</li>
+            <li>「アプリをインストール」または「ホーム画面に追加」をタップ</li>
+            <li>表示名を確認して「インストール」</li>
+          </ol>
+        </div>
+        <div class="install-card">
+          <h3>iPhoneの場合(Safari)</h3>
+          <ol>
+            <li>Safari(他のブラウザ不可)でアプリを開く</li>
+            <li>共有アイコン(四角に上矢印)をタップ</li>
+            <li>「ホーム画面に追加」を選択</li>
+            <li>右上の「追加」をタップ</li>
+          </ol>
+        </div>
+      </div>
+      <p class="note" style="margin-top: 24px;">
+        追加すると、ホーム画面のアイコンからブラウザのUIなしでアプリのように起動できます。
+      </p>
     </div>
   </section>
 
