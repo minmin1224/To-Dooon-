@@ -20,9 +20,11 @@
 
     <form id="todo-form" class="todo-form">
       <input type="text" id="todo-input" placeholder="やることを入力..." autocomplete="off" required>
+      <button type="button" id="mic-btn" class="mic-btn" title="音声入力" aria-label="音声入力">🎤</button>
       <input type="date" id="todo-date">
       <button type="submit">追加</button>
     </form>
+    <p id="mic-status" class="mic-status"></p>
 
     <div class="filters">
       <button class="filter-btn active" data-filter="all">すべて</button>

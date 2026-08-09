@@ -7,6 +7,8 @@ const list = document.getElementById("todo-list");
 const countEl = document.getElementById("todo-count");
 const filterBtns = document.querySelectorAll(".filter-btn");
 const clearCompletedBtn = document.getElementById("clear-completed");
+const micBtn = document.getElementById("mic-btn");
+const micStatus = document.getElementById("mic-status");
 
 let todos = [];
 let currentFilter = "all";
@@ -187,6 +189,65 @@ filterBtns.forEach((btn) => {
 });
 
 clearCompletedBtn.addEventListener("click", clearCompleted);
+
+function setupVoiceInput() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    micBtn.disabled = true;
+    micBtn.title = "この端末・ブラウザは音声入力に対応していません";
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = "ja-JP";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  let listening = false;
+
+  recognition.addEventListener("start", () => {
+    listening = true;
+    micBtn.classList.add("listening");
+    micStatus.textContent = "聞き取り中...";
+  });
+
+  recognition.addEventListener("result", (e) => {
+    const transcript = e.results[0][0].transcript.trim();
+    if (transcript) {
+      input.value = transcript;
+      input.focus();
+    }
+  });
+
+  recognition.addEventListener("error", (e) => {
+    if (e.error === "not-allowed" || e.error === "service-not-allowed") {
+      micStatus.textContent = "マイクの使用が許可されていません";
+    } else if (e.error === "no-speech") {
+      micStatus.textContent = "音声を認識できませんでした";
+    } else {
+      micStatus.textContent = "音声入力エラーが発生しました";
+    }
+  });
+
+  recognition.addEventListener("end", () => {
+    listening = false;
+    micBtn.classList.remove("listening");
+    setTimeout(() => {
+      if (!listening) micStatus.textContent = "";
+    }, 2000);
+  });
+
+  micBtn.addEventListener("click", () => {
+    if (listening) {
+      recognition.stop();
+    } else {
+      micStatus.textContent = "";
+      recognition.start();
+    }
+  });
+}
+
+setupVoiceInput();
 
 async function init() {
   todos = await loadTodos();
