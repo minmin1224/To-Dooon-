@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://minmin1224.github.io/To-Dooon-/sitemap.xml
